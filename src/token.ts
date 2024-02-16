@@ -1,5 +1,6 @@
 import { z } from "zod";
 import jwt from "jsonwebtoken";
+import { env } from "~/env";
 
 export const payloadSchema = z.object({
   nick: z.string().min(1).max(32),
@@ -10,8 +11,7 @@ export type Payload = z.infer<typeof payloadSchema>;
 
 export function decode(token: string) {
   try {
-    // TODO: use a real secret here
-    const decoded = jwt.verify(token, "very secret, much wow!", {
+    const decoded = jwt.verify(token, env.JOIN_TOKEN_SECRET, {
       maxAge: "1w",
     });
     return payloadSchema.safeParse(decoded);
