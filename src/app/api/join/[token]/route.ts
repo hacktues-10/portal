@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { errorUrl } from "~/utils";
-import { decode } from "~/token";
-import { createFlow, flowStateCookieName } from "~/flow";
-import { DISCORD_CALLBACK_PATH, getDiscordAuthorizationUrl } from "~/discord";
+import { errorUrl } from "~/lib/utils";
+import { decode } from "~/lib/token";
+import { createFlow, flowStateCookieName } from "~/lib/flow";
+import {
+  DISCORD_CALLBACK_PATH,
+  getDiscordAuthorizationUrl,
+} from "~/lib/discord";
 import { env } from "~/env";
 
 export async function GET(

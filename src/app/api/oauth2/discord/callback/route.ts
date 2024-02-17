@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { errorUrl } from "~/utils";
-import { flowStateCookieName, verifyFlow } from "~/flow";
+import { errorUrl } from "~/lib/utils";
+import { flowStateCookieName, verifyFlow } from "~/lib/flow";
 
 export async function GET(req: NextRequest) {
   const errorCode = req.nextUrl.searchParams.get("error");

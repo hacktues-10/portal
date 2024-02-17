@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { Payload } from "~/token";
+import { Payload } from "~/lib/token";
 import { env } from "~/env";
 
 const payload = {

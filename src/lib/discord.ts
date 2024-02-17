@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { absoluteUrl } from "~/utils";
+import { absoluteUrl } from "~/lib/utils";
 import { env } from "~/env";
 
 const DISCORD_AUTHORIZATION_URL = "https://discord.com/oauth2/authorize";

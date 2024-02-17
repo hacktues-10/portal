@@ -1,4 +1,4 @@
-import { Payload, payloadSchema } from "~/token";
+import { Payload, payloadSchema } from "~/lib/token";
 import { env } from "~/env";
 import { z } from "zod";
 
