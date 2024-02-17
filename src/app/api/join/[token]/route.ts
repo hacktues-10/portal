@@ -20,8 +20,7 @@ export async function GET(
 
   const url = getDiscordAuthorizationUrl(req, state.signature);
   // TODO: redirect here
-  // const res = NextResponse.redirect(url);
-  const res = new NextResponse(url);
+  const res = NextResponse.redirect(url);
   res.cookies.set({
     name: flowStateCookieName,
     value: state.cookie,
