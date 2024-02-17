@@ -55,6 +55,8 @@ const stateCookieSchema = payloadSchema.extend({
   sex: z.number(),
 });
 
+export type FlowCookie = z.infer<typeof stateCookieSchema>;
+
 export async function verifyFlow(state: string, signature: string) {
   const isValid = await crypto.subtle.verify(
     "HMAC",

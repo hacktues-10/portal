@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { errorUrl } from "~/lib/utils";
+import { absoluteUrl, errorUrl } from "~/lib/utils";
 import { flowStateCookieName, verifyFlow } from "~/lib/flow";
-import { exchangeCodeForToken } from "~/lib/discord";
+import {
+  addGuildMember,
+  exchangeCodeForToken,
+  getCurrentUser,
+  updateGuildMember,
+} from "~/lib/discord";
 
 export async function GET(req: NextRequest) {
   const errorCode = req.nextUrl.searchParams.get("error");
@@ -28,11 +33,42 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(errorUrl("callback-error", req));
   }
 
-  const exchangeResponse = await exchangeCodeForToken(code, req);
-  if (!exchangeResponse.success) {
+  const accessTokenResponse = await exchangeCodeForToken(code, req);
+  if (!accessTokenResponse.success) {
     // TODO: actual logging
-    console.error(exchangeResponse.error);
+    console.error(accessTokenResponse.error);
     return NextResponse.redirect(errorUrl("callback-error", req));
   }
-  return NextResponse.json(exchangeResponse.data);
+
+  const currentUser = await getCurrentUser(accessTokenResponse.data);
+  if (!currentUser.success) {
+    // TODO: actual logging
+    console.error(currentUser.error);
+    return NextResponse.redirect(errorUrl("callback-error", req));
+  }
+
+  const joinAttempt = await addGuildMember(
+    currentUser.data.id,
+    accessTokenResponse.data.access_token,
+    cookie.data,
+  );
+  if (!joinAttempt.success) {
+    // TODO: actual logging
+    console.error(joinAttempt.error);
+    return NextResponse.redirect(errorUrl("callback-error", req));
+  }
+
+  if (!joinAttempt.createdNewMember) {
+    const updateMemberAttempt = await updateGuildMember(
+      currentUser.data.id,
+      cookie.data,
+    );
+    if (!updateMemberAttempt.success) {
+      // TODO: actual logging
+      console.error(updateMemberAttempt.error);
+      return NextResponse.redirect(errorUrl("callback-error", req));
+    }
+  }
+
+  return NextResponse.redirect(absoluteUrl("/success", req));
 }

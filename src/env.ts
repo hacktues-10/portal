@@ -10,6 +10,8 @@ export const env = createEnv({
 
     DISCORD_CLIENT_ID: z.string(),
     DISCORD_CLIENT_SECRET: z.string(),
+    DISCORD_GUILD_ID: z.string(),
+    DISCORD_BOT_TOKEN: z.string(),
   },
   client: {},
   experimental__runtimeEnv: {},
