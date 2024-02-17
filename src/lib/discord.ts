@@ -4,7 +4,7 @@ import { env } from "~/env";
 import { z } from "zod";
 
 const DISCORD_AUTHORIZATION_URL = "https://discord.com/oauth2/authorize";
-export const DISCORD_CALLBACK_PATH = "/api/oauth2/discord/callback";
+export const DISCORD_CALLBACK_PATH = "/api/discord/callback";
 const DISCORD_TOKEN_URL = "https://discord.com/api/oauth2/token";
 
 export const getDiscordAuthorizationUrl = (
