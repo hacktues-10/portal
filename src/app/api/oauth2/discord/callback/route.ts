@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { errorUrl } from "~/lib/utils";
 import { flowStateCookieName, verifyFlow } from "~/lib/flow";
+import { exchangeCodeForToken } from "~/lib/discord";
 
 export async function GET(req: NextRequest) {
   const errorCode = req.nextUrl.searchParams.get("error");
@@ -27,5 +28,11 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(errorUrl("callback-error", req));
   }
 
-  return NextResponse.json({ code });
+  const exchangeResponse = await exchangeCodeForToken(code, req);
+  if (!exchangeResponse.success) {
+    // TODO: actual logging
+    console.error(exchangeResponse.error);
+    return NextResponse.redirect(errorUrl("callback-error", req));
+  }
+  return NextResponse.json(exchangeResponse.data);
 }

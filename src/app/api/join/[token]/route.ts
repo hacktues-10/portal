@@ -6,7 +6,6 @@ import {
   DISCORD_CALLBACK_PATH,
   getDiscordAuthorizationUrl,
 } from "~/lib/discord";
-import { env } from "~/env";
 
 export async function GET(
   req: NextRequest,
