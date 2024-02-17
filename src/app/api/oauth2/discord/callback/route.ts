@@ -3,6 +3,15 @@ import { errorUrl } from "~/utils";
 import { flowStateCookieName, verifyFlow } from "~/flow";
 
 export async function GET(req: NextRequest) {
+  const errorCode = req.nextUrl.searchParams.get("error");
+  if (errorCode) {
+    const errorDescription = req.nextUrl.searchParams.get("error_description");
+    const errorUri = req.nextUrl.searchParams.get("error_uri");
+    // TODO: actual logging
+    console.error({ errorCode, errorDescription, errorUri });
+    return NextResponse.redirect(errorUrl("callback-error", req));
+  }
+
   const signature = req.nextUrl.searchParams.get("state");
   const state = req.cookies.get(flowStateCookieName)?.value;
   if (!signature || !state) {
@@ -10,8 +19,13 @@ export async function GET(req: NextRequest) {
   }
   const cookie = await verifyFlow(state, signature);
   if (!cookie.success) {
-    return NextResponse.redirect(errorUrl("session-expired2", req));
+    return NextResponse.redirect(errorUrl("session-expired", req));
   }
 
-  return NextResponse.json({ cookie: cookie.data });
+  const code = req.nextUrl.searchParams.get("code");
+  if (!code) {
+    return NextResponse.redirect(errorUrl("callback-error", req));
+  }
+
+  return NextResponse.json({ code });
 }
