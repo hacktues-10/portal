@@ -1,4 +1,8 @@
-export default function JoinPage({ token }: { token: string }) {
+export default function JoinPage({
+  params: { token },
+}: {
+  params: { token: string };
+}) {
   return (
     <main>
       <h1>Join server</h1>
