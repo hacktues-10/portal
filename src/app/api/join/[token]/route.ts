@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { errorUrl } from "~/utils";
 import { decode } from "~/token";
+import { createFlow } from "~/flow";
 
-export function GET(
+export async function GET(
   req: NextRequest,
   { params: { token } }: { params: { token: string } },
 ) {
@@ -11,5 +12,7 @@ export function GET(
     return NextResponse.redirect(errorUrl("expired", req));
   }
 
-  return NextResponse.json({ payload: decoded.data });
+  const state = await createFlow(decoded.data);
+
+  return NextResponse.json({ state: state });
 }

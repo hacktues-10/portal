@@ -4,6 +4,7 @@ import { z } from "zod";
 export const env = createEnv({
   server: {
     JOIN_TOKEN_SECRET: z.string(),
+    FLOW_SESSION_SECRET: z.string(),
   },
   client: {},
   experimental__runtimeEnv: {},
