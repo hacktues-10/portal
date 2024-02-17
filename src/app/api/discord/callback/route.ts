@@ -15,36 +15,36 @@ export async function GET(req: NextRequest) {
     const errorUri = req.nextUrl.searchParams.get("error_uri");
     // TODO: actual logging
     console.error({ errorCode, errorDescription, errorUri });
-    return NextResponse.redirect(errorUrl("callback-error", req));
+    return NextResponse.redirect(errorUrl(req, "callback-error"));
   }
 
   const signature = req.nextUrl.searchParams.get("state");
   const state = req.cookies.get(flowStateCookieName)?.value;
   if (!signature || !state) {
-    return NextResponse.redirect(errorUrl("session-expired", req));
+    return NextResponse.redirect(errorUrl(req, "session-expired"));
   }
   const cookie = await verifyFlow(state, signature);
   if (!cookie.success) {
-    return NextResponse.redirect(errorUrl("session-expired", req));
+    return NextResponse.redirect(errorUrl(req, "session-expired"));
   }
 
   const code = req.nextUrl.searchParams.get("code");
   if (!code) {
-    return NextResponse.redirect(errorUrl("callback-error", req));
+    return NextResponse.redirect(errorUrl(req, "callback-error"));
   }
 
   const accessTokenResponse = await exchangeCodeForToken(code, req);
   if (!accessTokenResponse.success) {
     // TODO: actual logging
     console.error(accessTokenResponse.error);
-    return NextResponse.redirect(errorUrl("callback-error", req));
+    return NextResponse.redirect(errorUrl(req, "callback-error"));
   }
 
   const currentUser = await getCurrentUser(accessTokenResponse.data);
   if (!currentUser.success) {
     // TODO: actual logging
     console.error(currentUser.error);
-    return NextResponse.redirect(errorUrl("callback-error", req));
+    return NextResponse.redirect(errorUrl(req, "callback-error"));
   }
 
   const joinAttempt = await addGuildMember(
@@ -55,7 +55,7 @@ export async function GET(req: NextRequest) {
   if (!joinAttempt.success) {
     // TODO: actual logging
     console.error(joinAttempt.error);
-    return NextResponse.redirect(errorUrl("callback-error", req));
+    return NextResponse.redirect(errorUrl(req, "callback-error"));
   }
 
   if (!joinAttempt.createdNewMember) {
@@ -66,7 +66,7 @@ export async function GET(req: NextRequest) {
     if (!updateMemberAttempt.success) {
       // TODO: actual logging
       console.error(updateMemberAttempt.error);
-      return NextResponse.redirect(errorUrl("callback-error", req));
+      return NextResponse.redirect(errorUrl(req, "callback-error"));
     }
   }
 
