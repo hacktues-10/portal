@@ -1,3 +1,9 @@
+"use client";
+
+import { useFormStatus } from "react-dom";
+import { DiscordButton } from "~/app/_components/discord-button";
+
 export function ConnectDiscordButton() {
-  return <button>Join</button>;
+  const { pending } = useFormStatus();
+  return <DiscordButton isLoading={pending}>Свържи Discord</DiscordButton>;
 }

@@ -38,8 +38,8 @@ export default function JoinPage({ params }: { params: { token: string } }) {
   };
 
   return (
-    <div className="max-w-lg items-center space-y-5 justify-center">
-      <h1 className="scroll-m-20 text-3xl font-semibold tracking-tight text-center">
+    <div className="max-w-lg items-center space-y-5 justify-center text-center">
+      <h1 className="scroll-m-20 text-3xl font-semibold tracking-tight">
         Здравейте, {token.data.nick}!
       </h1>
       <p className="text-muted-foreground">
