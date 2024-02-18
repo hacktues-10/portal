@@ -8,6 +8,7 @@ import {
 } from "~/lib/discord";
 import { cookies } from "next/headers";
 import { request } from "~/lib/hacks";
+import { ConnectDiscordButton } from "~/app/join/[token]/_components/connect-discord-button";
 
 export default function JoinPage({ params }: { params: { token: string } }) {
   const token = decode(params.token);
@@ -19,8 +20,10 @@ export default function JoinPage({ params }: { params: { token: string } }) {
     "use server";
 
     const state = await createFlow(token.data);
-
-    const url = getDiscordAuthorizationUrl(request(), state.signature);
+    const authorizationUrl = getDiscordAuthorizationUrl(
+      request(),
+      state.signature,
+    );
 
     cookies().set({
       name: flowStateCookieName,
@@ -30,15 +33,25 @@ export default function JoinPage({ params }: { params: { token: string } }) {
       path: DISCORD_CALLBACK_PATH,
       expires: state.expires,
     });
-    return redirect(url);
+
+    return redirect(authorizationUrl);
   };
 
   return (
-    <main>
-      <h1>Hi, {token.data.nick}</h1>
+    <div className="max-w-lg items-center space-y-5 justify-center">
+      <h1 className="scroll-m-20 text-3xl font-semibold tracking-tight text-center">
+        Здравейте, {token.data.nick}!
+      </h1>
+      <p className="text-muted-foreground">
+        Вие сте поканен/а да се присъедините към Discord сървъра на
+        Hack&nbsp;TUES&nbsp;X.
+      </p>
+      <p className="text-muted-foreground">
+        За да продължите, моля, свържете своя Discord акаунт.
+      </p>
       <form action={initiateOAuthFlow}>
-        <button>Join</button>
+        <ConnectDiscordButton />
       </form>
-    </main>
+    </div>
   );
 }
