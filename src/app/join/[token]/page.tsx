@@ -1,5 +1,5 @@
 import { decode } from "~/lib/token";
-import { relativeErrorUrl, request } from "~/lib/utils";
+import { relativeErrorUrl } from "~/lib/utils";
 import { redirect } from "next/navigation";
 import { createFlow, flowStateCookieName } from "~/lib/flow";
 import {
@@ -7,6 +7,7 @@ import {
   getDiscordAuthorizationUrl,
 } from "~/lib/discord";
 import { cookies } from "next/headers";
+import { request } from "~/lib/hacks";
 
 export default function JoinPage({ params }: { params: { token: string } }) {
   const token = decode(params.token);
