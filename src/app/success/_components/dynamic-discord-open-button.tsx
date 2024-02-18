@@ -1,15 +1,15 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { StaticDiscordJoinButton } from "~/app/success/_components/static-discord-join-button";
+import { StaticDiscordOpenButton } from "~/app/success/_components/static-discord-open-button";
 
-export function DynamicDiscordJoinButton(props: {
+export function DynamicDiscordOpenButton(props: {
   defaultJoinChannelId: string;
   joinGuildId: string;
 }) {
   const joinChannelId = useJoinChannelId(props.defaultJoinChannelId);
   return (
-    <StaticDiscordJoinButton
+    <StaticDiscordOpenButton
       joinGuildId={props.joinGuildId}
       joinChannelId={joinChannelId}
     />

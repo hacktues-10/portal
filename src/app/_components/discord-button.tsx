@@ -2,7 +2,7 @@ import React from "react";
 import { Button, ButtonProps } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 import { FaDiscord } from "react-icons/fa6";
-import { LuHourglass, LuMoreHorizontal } from "react-icons/lu";
+import { LuMoreHorizontal } from "react-icons/lu";
 
 export const DiscordButton = React.forwardRef<
   HTMLButtonElement,
@@ -18,14 +18,24 @@ export const DiscordButton = React.forwardRef<
       size={size || "lg"}
       {...props}
     >
-      {!isLoading ? (
-        <FaDiscord className="mr-2 h-5 w-5" />
+      {!props.asChild ? (
+        <>
+          <DiscordButtonIcon isLoading={isLoading} />
+          {children}
+        </>
       ) : (
-        <LuMoreHorizontal className="mr-2 h-5 w-5 animate-pulse" />
+        children
       )}
-      {children}
     </Button>
   );
 });
 
 DiscordButton.displayName = "DiscordButton";
+
+export function DiscordButtonIcon({ isLoading }: { isLoading?: boolean }) {
+  return !isLoading ? (
+    <FaDiscord className="mr-2 h-5 w-5" />
+  ) : (
+    <LuMoreHorizontal className="mr-2 h-5 w-5 animate-pulse" />
+  );
+}
