@@ -5,6 +5,7 @@ import "./globals.css";
 import { cn } from "~/lib/utils";
 import Link from "next/link";
 import { Card } from "~/components/ui/card";
+import { Separator } from "~/components/ui/separator";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -39,6 +40,7 @@ export default function RootLayout({
         <main className="flex min-h-screen items-center justify-center overflow-x-clip p-6">
           <section className="flex w-full max-w-sm flex-col gap-5">
             <Card className="w-full p-6">{children}</Card>
+            <Separator />
             <p className="text-center text-xl">
               <Link
                 href="https://hacktues.bg"
