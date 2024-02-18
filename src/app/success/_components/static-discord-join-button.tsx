@@ -1,5 +1,3 @@
-import { env } from "~/env";
-
 export function StaticDiscordJoinButton(props: {
   joinGuildId: string;
   joinChannelId: string;
