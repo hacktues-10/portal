@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { cn } from "~/lib/utils";
+import Link from "next/link";
 
 const inter = Inter({
   subsets: ["latin", "cyrillic"],
@@ -34,7 +35,19 @@ export default function RootLayout({
         )}
       >
         <div className="absolute inset-0 -z-50 h-full bg-[url(./assets/bg-grid.png)] bg-[length:80px_80px] bg-repeat-round [mask-image:linear-gradient(to_bottom,transparent,10%,white,90%,transparent)]" />
-        {children}
+        <main className="flex min-h-screen items-center justify-center overflow-x-clip p-6">
+          <section className="flex w-full max-w-sm flex-col gap-5">
+            {children}
+            <p className="text-center text-xl">
+              <Link
+                href="https://hacktues.bg"
+                className="font-llpixel text-brand"
+              >
+                Hack&nbsp;TUES&nbsp;<span className="text-sand">X</span>
+              </Link>
+            </p>
+          </section>
+        </main>
       </body>
     </html>
   );
