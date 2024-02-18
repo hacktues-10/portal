@@ -70,5 +70,9 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  return NextResponse.redirect(absoluteUrl("/success", req));
+  const redirectTo = absoluteUrl("/success", req);
+  if (cookie.data.entry) {
+    redirectTo.searchParams.set("entry", cookie.data.entry);
+  }
+  return NextResponse.redirect(redirectTo);
 }

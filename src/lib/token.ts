@@ -5,6 +5,7 @@ import { env } from "~/env";
 export const payloadSchema = z.object({
   nick: z.string().min(1).max(32),
   roles: z.array(z.string()),
+  entry: z.string().optional(),
 });
 
 export type Payload = z.infer<typeof payloadSchema>;

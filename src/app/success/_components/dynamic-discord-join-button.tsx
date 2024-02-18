@@ -18,7 +18,7 @@ export function DynamicDiscordJoinButton(props: {
 
 function useJoinChannelId(defaultJoinChannelId: string) {
   const searchParams = useSearchParams();
-  const joinChannelId = searchParams.get("entrypoint");
+  const joinChannelId = searchParams.get("entry");
   if (!joinChannelId || !isValidSnowflake(joinChannelId)) {
     return defaultJoinChannelId;
   }
