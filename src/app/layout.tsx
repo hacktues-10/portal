@@ -38,7 +38,7 @@ export default function RootLayout({
       >
         <div className="absolute inset-0 -z-50 h-full bg-[url(./assets/bg-grid.png)] bg-[length:80px_80px] bg-repeat-round [mask-image:linear-gradient(to_bottom,transparent,10%,white,90%,transparent)]" />
         <main className="flex min-h-screen items-center justify-center overflow-x-clip p-6">
-          <section className="flex w-full max-w-sm flex-col gap-5">
+          <section className="flex w-full max-w-md flex-col gap-5">
             <Card className="w-full p-6">{children}</Card>
             <Separator />
             <p className="text-center text-xl">

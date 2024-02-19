@@ -10,14 +10,3 @@ export function absoluteUrl(url: string | URL, req: NextRequest) {
   const base = new URL(req.nextUrl.href);
   return new URL(url, base);
 }
-
-export function relativeErrorUrl(error?: string) {
-  if (!error) {
-    return "/error";
-  }
-  return `/error/${error}`;
-}
-
-export function errorUrl(req: NextRequest, error?: string) {
-  return absoluteUrl(relativeErrorUrl(error), req);
-}
