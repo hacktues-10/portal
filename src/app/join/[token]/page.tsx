@@ -1,5 +1,4 @@
 import { decode } from "~/lib/token";
-import { relativeErrorUrl } from "~/lib/utils";
 import { redirect } from "next/navigation";
 import { createFlow, flowStateCookieName } from "~/lib/flow";
 import {
@@ -9,6 +8,8 @@ import {
 import { cookies } from "next/headers";
 import { request } from "~/lib/hacks";
 import { ConnectDiscordButton } from "~/app/join/[token]/_components/connect-discord-button";
+import { relativeErrorUrl } from "~/app/error/[[...error]]/_errors";
+import { HourglassIcon } from "~/app/_components/hourglass-icon";
 
 export default function JoinPage({ params }: { params: { token: string } }) {
   const token = decode(params.token);
@@ -38,18 +39,28 @@ export default function JoinPage({ params }: { params: { token: string } }) {
   };
 
   return (
-    <div className="max-w-lg items-center space-y-5 justify-center text-center">
-      <h1 className="scroll-m-20 text-3xl font-semibold tracking-tight">
-        Здравейте, {token.data.nick}!
-      </h1>
+    <div className="max-w-lg items-center space-y-5 justify-center">
+      <div className="flex gap-5">
+        <div className="w-1/3">
+          <HourglassIcon />
+        </div>
+        <div className="flex flex-col justify-center gap-2">
+          <h1 className="scroll-m-20 text-4xl font-bold tracking-tight">
+            Здравейте,
+          </h1>
+          <h2 className="text-3xl font-semibold tracking-tight">
+            {token.data.nick}!
+          </h2>
+        </div>
+      </div>
       <p className="text-muted-foreground">
         Вие сте поканен/а да се присъедините към Discord сървъра на
         Hack&nbsp;TUES&nbsp;X.
       </p>
       <p className="text-muted-foreground">
-        За да продължите, моля, свържете своя Discord акаунт.
+        За да продължите, моля, свържете своя акаунт.
       </p>
-      <form action={initiateOAuthFlow}>
+      <form action={initiateOAuthFlow} className="text-center">
         <ConnectDiscordButton />
       </form>
     </div>
