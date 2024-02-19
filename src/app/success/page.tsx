@@ -5,9 +5,11 @@ import { DynamicDiscordOpenButton } from "~/app/success/_components/dynamic-disc
 
 export default function JoinSuccessPage() {
   return (
-    <div>
-      <h1>Success</h1>
-      <p>You have successfully joined the server!</p>
+    <div className="space-y-3 text-center">
+      <h1 className="text-3xl font-extrabold">Успешно се присъединихте!</h1>
+      <p className="text-muted-foreground">
+        Вече сте част от Discord сървъра на Hack&nbsp;TUES&nbsp;X.
+      </p>
       <Suspense
         fallback={
           <StaticDiscordOpenButton

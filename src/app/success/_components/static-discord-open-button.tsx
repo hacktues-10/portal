@@ -13,7 +13,7 @@ export function StaticDiscordOpenButton(props: {
         href={`https://discord.com/channels/${props.joinGuildId}/${props.joinChannelId}`}
       >
         <DiscordButtonIcon />
-        Open Discord
+        Отвори Discord
       </a>
     </DiscordButton>
   );
