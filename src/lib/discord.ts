@@ -20,7 +20,7 @@ export const getDiscordAuthorizationUrl = (
     ["client_id", env.DISCORD_CLIENT_ID],
     ["scope", "identify guilds.join"],
     ["redirect_uri", getDiscordRedirectUrl(req)],
-    ["prompt", "none"],
+    ["prompt", "consent"],
     ["state", signature],
   ])}`;
 
