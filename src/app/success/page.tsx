@@ -3,6 +3,15 @@ import { Suspense } from "react";
 import { StaticDiscordOpenButton } from "~/app/success/_components/static-discord-open-button";
 import { DynamicDiscordOpenButton } from "~/app/success/_components/dynamic-discord-open-button";
 
+export const metadata = {
+  title: "Успешно се присъединихте!",
+  description: "Вече сте част от Discord сървъра на Hack TUES X.",
+  openGraph: {
+    title: "Успешно се присъединихте!",
+    description: "Вече сте част от Discord сървъра на Hack TUES X.",
+  },
+};
+
 export default function JoinSuccessPage() {
   return (
     <div className="space-y-3 text-center">

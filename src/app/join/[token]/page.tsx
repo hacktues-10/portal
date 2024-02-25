@@ -11,6 +11,17 @@ import { ConnectDiscordButton } from "~/app/join/[token]/_components/connect-dis
 import { relativeErrorUrl } from "~/app/error/[[...error]]/_errors";
 import { HourglassIcon } from "~/app/_components/hourglass-icon";
 
+export const metadata = {
+  title: "Присъединете се към Discord сървъра на Hack TUES X",
+  description:
+    "Присъединете се към Discord сървъра на Hack TUES X и бъдете част от десетото юбилейно издание!",
+  openGraph: {
+    title: "Присъединете се към Discord сървъра на Hack TUES X",
+    description:
+      "Присъединете се към Discord сървъра на Hack TUES X и бъдете част от десетото юбилейно издание!",
+  },
+};
+
 export default function JoinPage({ params }: { params: { token: string } }) {
   const token = decode(params.token);
   if (!token.success) {

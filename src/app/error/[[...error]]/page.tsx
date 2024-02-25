@@ -14,6 +14,10 @@ export function generateMetadata({ params }: Props): Metadata {
   return {
     title,
     description,
+    openGraph: {
+      title,
+      description,
+    },
   };
 }
 
