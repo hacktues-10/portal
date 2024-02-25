@@ -12,6 +12,9 @@ import { errorUrl } from "~/app/error/[[...error]]/_errors";
 export async function GET(req: NextRequest) {
   const errorCode = req.nextUrl.searchParams.get("error");
   if (errorCode) {
+    if (errorCode === "access_denied") {
+      return NextResponse.redirect(errorUrl(req, "cancelled"));
+    }
     const errorDescription = req.nextUrl.searchParams.get("error_description");
     const errorUri = req.nextUrl.searchParams.get("error_uri");
     // TODO: actual logging
