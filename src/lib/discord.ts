@@ -24,8 +24,13 @@ export const getDiscordAuthorizationUrl = (
     ["state", signature],
   ])}`;
 
+const preview = (req: NextRequest) =>
+  env.VERCEL_ENV !== "preview"
+    ? req
+    : new NextRequest("http://localhost:3000", req);
+
 const getDiscordRedirectUrl = (req: NextRequest) =>
-  absoluteUrl(DISCORD_CALLBACK_PATH, req).toString();
+  absoluteUrl(DISCORD_CALLBACK_PATH, preview(req)).toString();
 
 const getDiscordGuildMemberUrl = (guildId: string, userId: string) =>
   `https://discord.com/api/v10/guilds/${guildId}/members/${userId}`;
