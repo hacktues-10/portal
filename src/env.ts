@@ -13,13 +13,14 @@ export const env = createEnv({
     DISCORD_GUILD_ID: z.string(),
     DISCORD_BOT_TOKEN: z.string(),
     DISCORD_DEFAULT_JOIN_CHANNEL_ID: z.string(),
-
     DISCORD_MENTOR_ROLE_ID: z.string(),
     DISCORD_MENTOR_JOIN_CHANNEL_ID: z.string().optional(),
     DISCORD_TECHNOLOGY_ROLES_MAP: z
       .string()
       .transform((arg) => JSON.parse(arg))
       .pipe(z.record(z.string(), z.string())),
+
+    POSTGRES_URL: z.string().url(),
   },
   client: {},
   experimental__runtimeEnv: {},

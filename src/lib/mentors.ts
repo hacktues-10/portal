@@ -50,8 +50,10 @@ const db = drizzle(sql, {
 });
 
 const mentorSchema = z.object({
-  m: z.number().int(),
+  id: z.number().int(),
 });
+
+export type MentorPayload = z.infer<typeof mentorSchema>;
 
 async function getMentorById(id: number) {
   const mentor = await db.query.mentors.findFirst({
@@ -73,13 +75,13 @@ function getTechnologyRoles(technologies: string[]) {
 export async function decodeMentor(token: string) {
   const res = verify(token);
   if (!res.success) {
-    return res;
+    return { success: false } as const;
   }
   const mentorPayload = mentorSchema.safeParse(res.decoded);
   if (!mentorPayload.success) {
     return { success: false } as const;
   }
-  const mentor = await getMentorById(mentorPayload.data.m);
+  const mentor = await getMentorById(mentorPayload.data.id);
   if (!mentor) {
     return { success: false } as const;
   }
@@ -90,7 +92,7 @@ export async function decodeMentor(token: string) {
     } as const;
   }
   return {
-    success: true,
+    success: true as const,
     payload: {
       mentor: mentor.id,
       nick: mentor.name,
