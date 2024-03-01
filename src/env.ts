@@ -13,6 +13,9 @@ export const env = createEnv({
     DISCORD_GUILD_ID: z.string(),
     DISCORD_BOT_TOKEN: z.string(),
     DISCORD_DEFAULT_JOIN_CHANNEL_ID: z.string(),
+
+    DISCORD_MENTOR_ROLE_ID: z.string(),
+    DISCORD_MENTOR_JOIN_CHANNEL_ID: z.string().optional(),
   },
   client: {},
   experimental__runtimeEnv: {},

@@ -10,12 +10,14 @@ export const payloadSchema = z.object({
 
 export type Payload = z.infer<typeof payloadSchema>;
 
-export function decode(token: string) {
+export function verify(token: string) {
   try {
-    const decoded = jwt.verify(token, env.JOIN_TOKEN_SECRET, {
-      maxAge: "1w",
-    });
-    return payloadSchema.safeParse(decoded);
+    return {
+      success: true,
+      decoded: jwt.verify(token, env.JOIN_TOKEN_SECRET, {
+        maxAge: "1w",
+      }),
+    };
   } catch (e) {
     if (e instanceof jwt.JsonWebTokenError) {
       return { success: false } as const;
@@ -23,4 +25,12 @@ export function decode(token: string) {
     // TODO: log `e` here
     throw e;
   }
+}
+
+export function decode(token: string) {
+  const res = verify(token);
+  if (!res.success) {
+    return res;
+  }
+  return payloadSchema.safeParse(res.decoded);
 }
