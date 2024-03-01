@@ -12,6 +12,7 @@ import { Payload, verify } from "~/lib/token";
 import { eq } from "drizzle-orm/sql/expressions/conditions";
 import { env } from "~/env";
 import { relations } from "drizzle-orm/relations";
+import { getChannelByName, sendMessage } from "~/lib/discord";
 
 const mentors = pgTable("mentors", {
   id: serial("id").primaryKey(),
@@ -56,14 +57,19 @@ const mentorSchema = z.object({
 export type MentorPayload = z.infer<typeof mentorSchema>;
 
 async function getMentorById(id: number) {
-  const mentor = await db.query.mentors.findFirst({
-    where: eq(mentors.id, id),
-    with: { team: true },
-  });
-  if (!mentor) {
+  try {
+    const mentor = await db.query.mentors.findFirst({
+      where: eq(mentors.id, id),
+      with: { team: true },
+    });
+    if (!mentor) {
+      return null;
+    }
+    return mentor;
+  } catch (e) {
+    console.error(e);
     return null;
   }
-  return mentor;
 }
 
 function getTechnologyRoles(technologies: string[]) {
@@ -130,6 +136,22 @@ export async function saveMentor(params: {
         hasTeamRole: params.hasTeamRole,
       })
       .where(eq(mentors.id, params.mentorId));
+    if (params.hasTeamRole) {
+      const mentor = await getMentorById(params.mentorId);
+      if (!mentor?.team?.discordRoleId) {
+        return;
+      }
+      const channel = await getChannelByName(mentor.team.id);
+      if (!channel.success) {
+        return;
+      }
+      await sendMessage(
+        channel.data.id,
+        `⏳ <@&${mentor.team.discordRoleId}>, вашият ментор се присъедини към този канал. <@${params.discordUserId}> и отбор, пожелаваме ви приятна и ползотворна работа в сървъра на Hack TUES X!`,
+        [params.discordUserId],
+        [mentor.team.discordRoleId],
+      );
+    }
   } catch (e) {
     // TODO: actual logging
     console.error(e);
