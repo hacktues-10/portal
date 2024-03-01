@@ -8,6 +8,7 @@ import {
   updateGuildMember,
 } from "~/lib/discord";
 import { errorUrl } from "~/app/error/[[...error]]/_errors";
+import { hasTeamRole, saveMentor } from "~/lib/mentors";
 
 export async function GET(req: NextRequest) {
   const errorCode = req.nextUrl.searchParams.get("error");
@@ -72,6 +73,14 @@ export async function GET(req: NextRequest) {
       console.error(updateMemberAttempt.error);
       return NextResponse.redirect(errorUrl(req, "discord-error"));
     }
+  }
+
+  if (cookie.data.mentor) {
+    await saveMentor({
+      mentorId: cookie.data.mentor,
+      discordUserId: currentUser.data.id,
+      hasTeamRole: hasTeamRole(cookie.data.roles),
+    });
   }
 
   const redirectTo = absoluteUrl("/success", req);
