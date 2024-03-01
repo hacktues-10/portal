@@ -3,14 +3,9 @@ import { sql } from "@vercel/postgres";
 import { drizzle } from "drizzle-orm/vercel-postgres";
 import {
   boolean,
-  date,
   integer,
-  numeric,
-  pgEnum,
   pgTable,
   serial,
-  timestamp,
-  unique,
   varchar,
 } from "drizzle-orm/pg-core";
 import { Payload, verify } from "~/lib/token";
@@ -70,7 +65,9 @@ async function getMentorById(id: number) {
 }
 
 function getTechnologyRoles(technologies: string[]) {
-  return [];
+  return technologies
+    .map((technology) => env.DISCORD_TECHNOLOGY_ROLES_MAP[technology])
+    .filter(Boolean);
 }
 
 export async function decodeMentor(token: string) {
