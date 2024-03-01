@@ -147,7 +147,7 @@ export async function saveMentor(params: {
       }
       await sendMessage(
         channel.data.id,
-        `⏳ <@&${mentor.team.discordRoleId}>, вашият отбор се присъедини към този канал. <@${params.discordUserId}> и отбор, пожелаваме ви приятна и ползотворна работа в сървъра на Hack TUES X!`,
+        `⏳ <@&${mentor.team.discordRoleId}>, вашият ментор се присъедини към този канал. <@${params.discordUserId}> и отбор, пожелаваме ви приятна и ползотворна работа в сървъра на Hack TUES X!`,
         [params.discordUserId],
         [mentor.team.discordRoleId],
       );
