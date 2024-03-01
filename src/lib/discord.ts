@@ -157,3 +157,97 @@ export async function updateGuildMember(
     success: true,
   };
 }
+
+export async function sendMessage(
+  channelId: string,
+  content: string,
+  notifiedUsers: string[],
+  notifiedRoles: string[],
+) {
+  try {
+    const response = await fetch(
+      `https://discord.com/api/v10/channels/${channelId}/messages`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bot ${env.DISCORD_BOT_TOKEN}`,
+        },
+        body: JSON.stringify({
+          content,
+          allowed_mentions: {
+            users: notifiedUsers,
+            roles: notifiedRoles,
+          },
+        }),
+      },
+    );
+    if (!response.ok) {
+      const data = (await response.json()) as unknown;
+      return {
+        success: false,
+        error: data as unknown,
+      } as const;
+    }
+    return {
+      success: true,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error,
+    } as const;
+  }
+}
+
+export async function getChannelByName(name: string) {
+  try {
+    const response = await fetch(
+      `https://discord.com/api/v10/guilds/${env.DISCORD_GUILD_ID}/channels`,
+      {
+        headers: {
+          Authorization: `Bot ${env.DISCORD_BOT_TOKEN}`,
+        },
+      },
+    );
+    if (!response.ok) {
+      const data = (await response.json()) as unknown;
+      return {
+        success: false,
+        error: data as unknown,
+      } as const;
+    }
+
+    const data = await response.json();
+    const channels = z
+      .array(
+        z.object({
+          id: z.string(),
+          name: z.string(),
+        }),
+      )
+      .safeParse(data);
+    if (!channels.success) {
+      return {
+        success: false,
+        error: channels.error,
+      } as const;
+    }
+    const channel = channels.data.find((channel) => channel.name === name);
+    if (!channel) {
+      return {
+        success: false,
+        error: new Error(`Channel ${name} not found`),
+      } as const;
+    }
+    return {
+      success: true,
+      data: channel,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error,
+    } as const;
+  }
+}
