@@ -92,6 +92,7 @@ export async function decodeMentor(token: string) {
   return {
     success: true,
     payload: {
+      mentor: mentor.id,
       nick: mentor.name,
       roles: [
         ...(mentor.team?.discordRoleId ? [mentor.team.discordRoleId] : []),
@@ -103,4 +104,31 @@ export async function decodeMentor(token: string) {
         : {}),
     } satisfies Payload,
   };
+}
+
+/**
+ * Figure out if a mentor has a team role id based on the roles they have
+ * @param roles The roles to check
+ */
+export function hasTeamRole(roles: string[]) {
+  return roles.length > 1 && roles[0] !== env.DISCORD_MENTOR_ROLE_ID;
+}
+
+export async function saveMentor(params: {
+  mentorId: number;
+  discordUserId: string;
+  hasTeamRole: boolean;
+}) {
+  try {
+    await db
+      .update(mentors)
+      .set({
+        discordUserSnowflake: params.discordUserId,
+        hasTeamRole: params.hasTeamRole,
+      })
+      .where(eq(mentors.id, params.mentorId));
+  } catch (e) {
+    // TODO: actual logging
+    console.error(e);
+  }
 }
