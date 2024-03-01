@@ -24,8 +24,13 @@ export const getDiscordAuthorizationUrl = (
     ["state", signature],
   ])}`;
 
+const preview = (req: NextRequest) =>
+  env.VERCEL_ENV !== "preview"
+    ? req
+    : new NextRequest("http://localhost:3000", req);
+
 const getDiscordRedirectUrl = (req: NextRequest) =>
-  absoluteUrl(DISCORD_CALLBACK_PATH, req).toString();
+  absoluteUrl(DISCORD_CALLBACK_PATH, preview(req)).toString();
 
 const getDiscordGuildMemberUrl = (guildId: string, userId: string) =>
   `https://discord.com/api/v10/guilds/${guildId}/members/${userId}`;
@@ -224,6 +229,7 @@ export async function getChannelByName(name: string) {
         z.object({
           id: z.string(),
           name: z.string(),
+          type: z.number().int(),
         }),
       )
       .safeParse(data);
@@ -233,7 +239,9 @@ export async function getChannelByName(name: string) {
         error: channels.error,
       } as const;
     }
-    const channel = channels.data.find((channel) => channel.name === name);
+    const channel = channels.data.find(
+      (channel) => channel.name === name && channel.type === 0,
+    );
     if (!channel) {
       return {
         success: false,
