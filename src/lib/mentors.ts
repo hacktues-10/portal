@@ -91,11 +91,12 @@ export async function decodeMentor(token: string) {
       error: new Error("name too long or too short"),
     } as const;
   }
+  const nick = mentor.name.trim().replaceAll(/ +/g, " ");
   return {
     success: true as const,
     payload: {
       mentor: mentor.id,
-      nick: mentor.name,
+      nick,
       roles: [
         ...(mentor.team?.discordRoleId ? [mentor.team.discordRoleId] : []),
         env.DISCORD_MENTOR_ROLE_ID,
