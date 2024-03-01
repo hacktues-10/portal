@@ -31,7 +31,7 @@ export function verify(token: string) {
 export function decode(token: string) {
   const res = verify(token);
   if (!res.success) {
-    return res;
+    return { success: false } as const;
   }
   return payloadSchema.safeParse(res.decoded);
 }
