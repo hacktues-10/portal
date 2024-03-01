@@ -224,6 +224,7 @@ export async function getChannelByName(name: string) {
         z.object({
           id: z.string(),
           name: z.string(),
+          type: z.number().int(),
         }),
       )
       .safeParse(data);
@@ -233,7 +234,9 @@ export async function getChannelByName(name: string) {
         error: channels.error,
       } as const;
     }
-    const channel = channels.data.find((channel) => channel.name === name);
+    const channel = channels.data.find(
+      (channel) => channel.name === name && channel.type === 0,
+    );
     if (!channel) {
       return {
         success: false,
