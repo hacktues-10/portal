@@ -51,7 +51,7 @@ export async function exchangeCodeForToken(code: string, req: NextRequest) {
       client_secret: env.DISCORD_CLIENT_SECRET,
       grant_type: "authorization_code",
       code,
-      redirect_uri: "http://localhost:3000/api/discord/callback",
+      redirect_uri: getDiscordRedirectUrl(req),
     }),
   });
   const data = (await response.json()) as unknown;
