@@ -1,6 +1,6 @@
-import { decode } from "~/lib/token";
-import { redirect } from "next/navigation";
+import { decodeMentor } from "~/lib/mentors";
 import { relativeErrorUrl } from "~/app/error/[[...error]]/_errors";
+import { redirect } from "next/navigation";
 import { ActiveJoinPage } from "~/app/join/_components/active-join-page";
 
 export const metadata = {
@@ -14,10 +14,14 @@ export const metadata = {
   },
 };
 
-export default function JoinPage({ params }: { params: { token: string } }) {
-  const token = decode(params.token);
+export default async function MentorJoinPage({
+  params,
+}: {
+  params: { token: string };
+}) {
+  const token = await decodeMentor(params.token);
   if (!token.success) {
     return redirect(relativeErrorUrl("expired"));
   }
-  return <ActiveJoinPage payload={token.data} />;
+  return <ActiveJoinPage payload={token.payload} />;
 }
