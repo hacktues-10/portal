@@ -73,9 +73,10 @@ async function getMentorById(id: number) {
 }
 
 function getTechnologyRoles(technologies: string[]) {
-  return technologies
+  const rolesWithDuplicates = technologies
     .map((technology) => env.DISCORD_TECHNOLOGY_ROLES_MAP[technology])
     .filter(Boolean);
+  return Array.from(new Set(rolesWithDuplicates));
 }
 
 export async function decodeMentor(token: string) {
