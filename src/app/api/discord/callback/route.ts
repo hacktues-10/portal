@@ -59,7 +59,16 @@ export async function GET(req: NextRequest) {
   );
   if (!joinAttempt.success) {
     // TODO: actual logging
-    console.error(joinAttempt.error);
+    console.error(
+      JSON.stringify({
+        error: joinAttempt.error,
+        data: {
+          id: currentUser.data.id,
+          nick: cookie.data.nick,
+          roles: cookie.data.roles,
+        },
+      }),
+    );
     return NextResponse.redirect(errorUrl(req, "discord-error"));
   }
 
@@ -70,7 +79,15 @@ export async function GET(req: NextRequest) {
     );
     if (!updateMemberAttempt.success) {
       // TODO: actual logging
-      console.error(updateMemberAttempt.error);
+      console.error(
+        JSON.stringify({
+          error: updateMemberAttempt.error,
+          data: {
+            nick: cookie.data.nick,
+            roles: cookie.data.roles,
+          },
+        }),
+      );
       return NextResponse.redirect(errorUrl(req, "discord-error"));
     }
   }

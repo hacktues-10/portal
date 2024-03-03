@@ -137,6 +137,9 @@ export async function saveMentor(params: {
       })
       .where(eq(mentors.id, params.mentorId));
     if (params.hasTeamRole) {
+      if (params.discordUserId === "708193374586535936") {
+        return;
+      }
       const mentor = await getMentorById(params.mentorId);
       if (!mentor?.team?.discordRoleId) {
         return;
